@@ -30,6 +30,22 @@ func IsEmpty(name string) (bool, error) {
 	return false, errors.New("folder not empty")
 }
 
+func OpenAndTruncate(name string, flags int, perm os.FileMode) (*os.File, error) {
+	if (flags & os.O_WRONLY) == 0 {
+		return nil, errors.New("write flag is not set")
+	}
+
+	f, err := os.OpenFile(name, flags, perm)
+	if os.IsNotExist(err) {
+		f, err = os.Create(name)
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	return f, f.Truncate(0)
+}
+
 func CopyFolder(src, dst string) error {
 	f, err := os.Open(src)
 	if err != nil {
