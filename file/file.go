@@ -7,6 +7,15 @@ import (
 	"os"
 )
 
+func NotExist(name string) (bool, error) {
+	f, err := os.Open(name)
+	if err != nil {
+		return os.IsNotExist(err), err
+	}
+	defer f.Close()
+	return false, errors.New("path already exists")
+}
+
 func IsEmpty(name string) (bool, error) {
 	f, err := os.Open(name)
 	if err != nil {
