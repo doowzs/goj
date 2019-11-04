@@ -8,8 +8,8 @@ import (
 	"os"
 )
 
-func runNew(folder string) error {
-	res, err := file.IsEmpty(folder)
+func runNew(path string) error {
+	res, err := file.IsEmpty(path)
 	if !res {
 		return err
 	}
@@ -28,5 +28,5 @@ func runNew(folder string) error {
 	}
 
 	log.Println("Extracting template archive...")
-	return archiver.Unarchive(temp.Name(), folder)
+	return archiver.Unarchive(temp.Name(), path)
 }
