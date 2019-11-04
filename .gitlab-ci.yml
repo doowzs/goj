@@ -30,5 +30,5 @@ deploy:
       -s $COS_SECRET
       -b $COS_BUCKET
       -r $COS_REGION
-    - coscmd upload -s ./$GOJ_VERSION.tar.xz /goj/template
+    - coscmd upload -s ./$GOJ_VERSION.tar.xz /goj/template/$GOJ_VERSION.tar.xz
     - echo "Deploy finished."
