@@ -1,12 +1,13 @@
 [[problem]]
-title   = "example"
-hasHint = false
+title  = "example"
+hint   = false
+source =
 
-[[limitations]]
+[[limits]]
 time   = 1   # in seconds
 memory = 256 # in MiB
 
-[[data]]
-size     = 10     # excluding test-0
+[[testdata]]
+size     = 10     # excluding sample
 generate = true
-language = "cpp"
+language = "C++"

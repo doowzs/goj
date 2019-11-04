@@ -1,5 +1,9 @@
 package app
 
-func runGen(src, dst string) error {
+func runGen(folder string) error {
+	return nil
+}
+
+func genFPS() error {
 	return nil
 }

@@ -6,11 +6,11 @@ import (
 
 var Version string
 
-func Run(job, src, dst string) error {
+func Run(job, folder string) error {
 	if job[0] == 'n' {
-		return runNew(src)
+		return runNew(folder)
 	} else if job[0] == 'g' {
-		return runGen(src, dst)
+		return runGen(folder)
 	} else {
 		return errors.New("Unsupported job " + job)
 	}

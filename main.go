@@ -10,15 +10,14 @@ import (
 var (
 	Version string = "0.1.0"
 	job     string
-	src     string
-	dst     string
+	folder  string
 )
 
 func main() {
 	parseArgs()
 	injectVars()
 
-	err := app.Run(job, src, dst)
+	err := app.Run(job, folder)
 	if err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, "Error occurred:", err)
 		os.Exit(-1)
@@ -28,7 +27,7 @@ func main() {
 
 func parseArgs() {
 	args := os.Args[1:]
-	if len(args) < 2 || len(args) > 3 {
+	if len(args) != 2 {
 		if len(args) == 1 && args[0] == "version" {
 			fmt.Println(Version)
 			os.Exit(0)
@@ -39,15 +38,10 @@ func parseArgs() {
 	}
 
 	job = args[0]
-	src = args[1]
-	dst = src + "/dist"
-	if len(args) == 3 {
-		dst = args[2]
-	}
+	folder = args[1]
 	log.Println("Arguments parsed:")
 	log.Println(" - job:", job)
-	log.Println(" - src:", src)
-	log.Println(" - dst:", dst)
+	log.Println(" - folder:", folder)
 }
 
 func printUsage() {
