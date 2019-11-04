@@ -1,0 +1,35 @@
+image: doowzs/golang-qcloud-ci:latest
+
+variables:
+  TZ: Asia/Shanghai
+  # COS_USERID: defined in GitLab
+  # COS_SECRET: defined in GitLab
+  # COS_BUCKET: defined in GitLab
+  # COS_REGION: defined in GitLab
+
+stages:
+  - deploy
+
+before_script:
+  - echo "Configuring timezone..."
+  - ln -fs /usr/share/zoneinfo/$TZ /etc/localtime
+  - echo "Current server time is '$(date)'."
+  - echo "Extracting version string..."
+  - export GOJ_VERSION=$(cat main.go | grep -Eo "Version string = \"([0-9.]+)\"" | cut -d'"' -f 2)
+  - echo "GOJ version is $GOJ_VERSION"
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Archiving template files..."
+    - tar czvf $GOJ_VERSION.tar.xz -C template .
+
+    - echo "Publishing..."
+    - cd public
+    - coscmd config
+      -a $COS_USERID
+      -s $COS_SECRET
+      -b $COS_BUCKET
+      -r $COS_REGION
+    - coscmd upload -s ./$GOJ_VERSION.tar.xz /goj/template
+    - echo "Deploy finished."
