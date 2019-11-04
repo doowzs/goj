@@ -25,7 +25,6 @@ deploy:
     - tar czvf $GOJ_VERSION.tar.xz -C template .
 
     - echo "Publishing..."
-    - cd public
     - coscmd config
       -a $COS_USERID
       -s $COS_SECRET
