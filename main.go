@@ -11,7 +11,7 @@ var (
 	Version string = "0.1.0"
 	job     string
 	src     string
-	dst    string
+	dst     string
 )
 
 func main() {

@@ -1,0 +1,12 @@
+[[problem]]
+title   = "example"
+hasHint = false
+
+[[limitations]]
+time   = 1   # in seconds
+memory = 256 # in MiB
+
+[[data]]
+size     = 10     # excluding test-0
+generate = true
+language = "cpp"
