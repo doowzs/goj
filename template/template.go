@@ -9,20 +9,23 @@ type File struct {
 	Content string
 }
 
-var Order = []string{
-	"_root",
-	"config",
-	"gen",
-	"std",
-	"_problem",
-	"description",
-	"input",
-	"output",
-	"hint",
-	"_data",
-	"test-in",
-	"test-out",
-}
+var (
+	Version string
+	Order = []string{
+		"_root",
+		"config",
+		"gen",
+		"std",
+		"_problem",
+		"description",
+		"input",
+		"output",
+		"hint",
+		"_data",
+		"test-in",
+		"test-out",
+	}
+)
 
 func NewTemplate(path string) map[string]File {
 	template := make(map[string]File)

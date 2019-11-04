@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"goj/app"
+	"goj/template"
 	"log"
 	"os"
 )
@@ -55,4 +56,5 @@ func printUsage() {
 
 func injectVars() {
 	app.Version = Version
+	template.Version = Version
 }
