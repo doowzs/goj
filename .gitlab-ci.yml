@@ -22,7 +22,7 @@ deploy:
   stage: deploy
   script:
     - echo "Archiving template files..."
-    - tar czvf $GOJ_VERSION.tar.xz -C template .
+    - tar czvf $GOJ_VERSION.tar.gz -C template .
 
     - echo "Publishing..."
     - coscmd config
@@ -30,5 +30,5 @@ deploy:
       -s $COS_SECRET
       -b $COS_BUCKET
       -r $COS_REGION
-    - coscmd upload -s ./$GOJ_VERSION.tar.xz /goj/template/$GOJ_VERSION.tar.xz
+    - coscmd upload -s ./$GOJ_VERSION.tar.gz /goj/template/$GOJ_VERSION.tar.gz
     - echo "Deploy finished."

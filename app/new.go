@@ -4,7 +4,6 @@ import (
 	"github.com/mholt/archiver"
 	"goj/file"
 	"io/ioutil"
-	"os"
 )
 
 func runNew(src string) error {
@@ -13,13 +12,12 @@ func runNew(src string) error {
 		return err
 	}
 
-	temp, err := ioutil.TempFile(".", "template.*.tar.xz")
+	temp, err := ioutil.TempFile(".", "template.*.tar.gz")
 	if err != nil {
 		return err
 	}
-	defer os.Remove(temp.Name())
 
-	url := "https://doowzs.com/goj/template/" + Version + ".tar.xz"
+	url := "https://doowzs.com/goj/template/" + Version + ".tar.gz"
 	err = file.DownloadFile(url, temp.Name())
 	if err != nil {
 		return err
