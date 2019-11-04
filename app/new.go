@@ -1,10 +1,8 @@
 package app
 
 import (
-	"github.com/mholt/archiver"
 	"goj/file"
-	"io/ioutil"
-	"log"
+	"goj/template"
 	"os"
 )
 
@@ -14,19 +12,12 @@ func runNew(path string) error {
 		return err
 	}
 
-	temp, err := ioutil.TempFile(".", "template.*.tar.gz")
-	if err != nil {
-		return err
-	}
-	defer os.Remove(temp.Name())
-
-	log.Println("Downloading template archive...")
-	url := "https://doowzs.com/goj/template/" + Version + ".tar.gz"
-	err = file.DownloadFile(url, temp.Name())
-	if err != nil {
-		return err
+	if os.IsNotExist(err) {
+		err = os.Mkdir(path, os.ModeDir)
+		if err != nil {
+			return err
+		}
 	}
 
-	log.Println("Extracting template archive...")
-	return archiver.Unarchive(temp.Name(), path)
+	return template.Create(path)
 }

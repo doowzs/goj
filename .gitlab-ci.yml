@@ -21,14 +21,17 @@ before_script:
 deploy:
   stage: deploy
   script:
-    - echo "Archiving template files..."
-    - tar czvf $GOJ_VERSION.tar.gz -C template .
+    - go get
+    - go run main.go version
+    - echo "Nothing to deploy."
+    #- echo "Archiving template files..."
+    #- tar czvf $GOJ_VERSION.tar.gz -C template .
 
-    - echo "Publishing..."
-    - coscmd config
-      -a $COS_USERID
-      -s $COS_SECRET
-      -b $COS_BUCKET
-      -r $COS_REGION
-    - coscmd upload -s ./$GOJ_VERSION.tar.gz /goj/template/$GOJ_VERSION.tar.gz
-    - echo "Deploy finished."
+    #- echo "Publishing..."
+    #- coscmd config
+    #  -a $COS_USERID
+    #  -s $COS_SECRET
+    #  -b $COS_BUCKET
+    #  -r $COS_REGION
+    #- coscmd upload -s ./$GOJ_VERSION.tar.gz /goj/template/$GOJ_VERSION.tar.gz
+    #- echo "Deploy finished."
