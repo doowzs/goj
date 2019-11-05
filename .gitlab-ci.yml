@@ -7,9 +7,6 @@ variables:
   # COS_BUCKET: defined in GitLab
   # COS_REGION: defined in GitLab
 
-stages:
-  - build
-
 before_script:
   - echo "Configuring timezone..."
   - ln -fs /usr/share/zoneinfo/$TZ /etc/localtime
@@ -23,17 +20,31 @@ before_script:
   - rm -rf $GOPATH/src/$CI_PROJECT_NAME
   - mkdir -p $GOPATH/src/$CI_PROJECT_NAME
   - cp -r $CI_PROJECT_DIR $GOPATH/src/
-  - cd $GOPATH/src/$CI_PROJECT_NAME
-  - go get ./...
 
-build:
-  stage: build
+  - coscmd config
+    -a $COS_USERID
+    -s $COS_SECRET
+    -b $COS_BUCKET
+    -r $COS_REGION
+
+source:
   script:
-    - coscmd config
-      -a $COS_USERID
-      -s $COS_SECRET
-      -b $COS_BUCKET
-      -r $COS_REGION
+    - cd $GOPATH/src
+    - tar czf goj-$(GOJ_VERSION).orig.tar.gz -C $CI_PROJECT_NAME .
+    - coscmd -s ./goj-$(GOJ_VERSION).orig.tar.gz /goj/source/goj-$(GOJ_VERSION).orig.tar.gz
+
+debian:
+  script:
+    - cd $GOPATH/src/$CI_PROJECT_NAME
+    - go get ./...
     - dpkg-source --before-build .
     - dpkg-buildpackage -us -uc -b
-    - ls
+    - cd $GOPATH/src
+    - coscmd -s ./goj-$(GOJ_VERSION)-0_amd64.deb /goj/debian/goj-$(GOJ_VERSION)-0_amd64.deb
+
+windows:
+  script:
+    - cd $GOPATH/src
+    - env GOOS=windows GOARCH=amd64 go build $CI_PROJECT_NAME
+    - zip goj-$(GOJ_VERSION)_amd64.zip
+    - coscmd -s ./goj-$(GOJ_VERSION)_amd64.zip /goj/windows/goj-$(GOJ_VERSION)_amd64.zip
