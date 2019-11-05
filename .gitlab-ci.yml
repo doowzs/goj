@@ -21,10 +21,11 @@ before_script:
   - echo "GOJ version is $GOJ_VERSION"
 
   - echo "Linking go library to GOROOT..."
-  - mkdir -p /root/go
-  - mkdir -p /root/go/src
-  - ln -s $CI_PROJECT_DIR /root/go/src/$CI_PROJECT_NAME
-  - go get
+  - cd $GOPATH/src
+  - mkdir -p $CI_PROJECT_NAME
+  - ln -s $CI_PROJECT_DIR
+  - cd $CI_PROJECT_NAME
+  - go get ./...
 
 build:
   stage: build
