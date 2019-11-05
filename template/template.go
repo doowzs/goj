@@ -31,6 +31,8 @@ var (
 		"_data",
 		"sample-in",
 		"sample-out",
+		// "test-in",
+		// "test-out",
 	}
 )
 
@@ -47,9 +49,9 @@ time   = 1        # measured in seconds
 memory = 256      # measured in MiB
 
 [[testdata]]
-size     = 10     # excluding the sample case (e.g. 10 means [0-10] => 11 tests)
-generate = true   # set to false for custom data instead of generating some
-language = "cpp"  # same as the source file extension, i.e. "c", "cpp", "java", etc.`}
+size      = 10     # excluding the sample case (e.g. 10 means [0-10] => 11 tests)
+overwrite = false  # set to true to force overwriting existing test data files
+language  = "cpp"  # same as the source file extension, i.e. "c", "cpp", "java", etc.`}
 	template["gen"] = File{path + "/", "gen", "testdata.language", `#include <bits/stdc++.h>
 int main() {
     /* please use stdin and stdout */
@@ -84,7 +86,20 @@ func NewTemplateWithViper(path string) (Template, *viper.Viper, error) {
 
 	v := viper.New()
 	v.SetConfigType("toml")
-	return t, v, v.ReadConfig(c)
+	err = v.ReadConfig(c)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	for _, index := range []string{"gen", "std"} {
+		t[index] = File{
+			Path:    t[index].Path,
+			Name:    t[index].Name,
+			Ext:     "." + v.GetString(t[index].Ext),
+			Content: ``,
+		}
+	}
+	return t, v, nil
 }
 
 func GetData(t Template, isInput bool, no int) string {

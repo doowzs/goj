@@ -3,9 +3,11 @@ package template
 import (
 	"bufio"
 	"fmt"
+	"goj/compile"
 	"gopkg.in/russross/blackfriday.v2"
 	"io"
 	"io/ioutil"
+	"log"
 	"os"
 	"strconv"
 )
@@ -19,6 +21,8 @@ func Generate(f *os.File, path string) error {
 	title  := v.GetString("problem.title")
 	time   := v.GetInt("limits.time")
 	memory := v.GetInt("limits.memory")
+	size   := v.GetInt("testdata.size")
+	ow     := v.GetBool("testdata.overwrite")
 
 	_, err = fmt.Fprintf(f, `<?xml version="1.0" encoding="UTF-8"?>
 <!--BEGIN FPS XML-->
@@ -51,7 +55,7 @@ func Generate(f *os.File, path string) error {
 		}
 	}
 
-	err = ParseTests(f, t, time, memory)
+	err = ParseTests(f, t, ow, size, time, memory)
 	if err != nil {
 		return err
 	}
@@ -128,8 +132,22 @@ func ParseHint(f *os.File, t Template) error {
 	return ParseMarkdownFile(f, t, "hint")
 }
 
-func ParseTests(f *os.File, t Template, time, memory int) error {
+func ParseTests(f *os.File, t Template, ow bool, size, time, memory int) error {
 	_, err := fmt.Fprintf(f, `<!--TEST DATA-->
 `)
+
+	var gen, std string
+	log.Println("Generating programs...")
+	gen, err = compile.Compile(t["gen"].Path, t["gen"].Name, t["gen"].Ext)
+	if err != nil {
+		return err
+	}
+	log.Println(" - gen:", gen)
+
+	std, err = compile.Compile(t["std"].Path, t["std"].Name, t["std"].Ext)
+	if err != nil {
+		return err
+	}
+	log.Println(" - std:", std)
 	return err
 }
