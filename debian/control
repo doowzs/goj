@@ -4,9 +4,6 @@ Priority: optional
 Maintainer: Tianyun Zhang <doowzs@qq.com>
 
 Package: goj
-Version: 0.2.0
 Architecture: amd64
-Build-Depends: debhelper (>= 11)
-Homepage: https://git.doowzs.com/doowzs/goj
-Vcs-Git: https://git.doowzs.com/doowzs/goj
+Homepage: https://doowzs.com/doowzs/goj
 Description: generate oj problems with go

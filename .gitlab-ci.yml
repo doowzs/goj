@@ -44,7 +44,6 @@ debian:
   script:
     - cd $GOPATH/src/$CI_PROJECT_NAME
     - go get ./...
-    - dpkg-source --before-build .
     - dpkg-buildpackage -us -uc -b
     - cd $GOPATH/src
     - coscmd upload ./goj_$VERSION-0_amd64.deb /goj/$VERSION/goj_$VERSION-0_debian_amd64.deb
