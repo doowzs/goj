@@ -23,7 +23,7 @@ before_script:
   - echo "Linking go library to GOROOT..."
   - cd $GOPATH/src
   - mkdir -p $CI_PROJECT_NAME
-  - ln -s $CI_PROJECT_DIR
+  - ln -fs $CI_PROJECT_DIR
   - cd $CI_PROJECT_NAME
   - go get ./...
 
