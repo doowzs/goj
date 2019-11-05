@@ -9,7 +9,6 @@ variables:
 
 stages:
   - build
-  - publish
 
 before_script:
   - echo "Configuring timezone..."
@@ -29,11 +28,6 @@ before_script:
 
 build:
   stage: build
-  script:
-    - go build
-
-publish:
-  stage: publish
   script:
     - coscmd config
       -a $COS_USERID
