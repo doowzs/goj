@@ -48,7 +48,7 @@ linux:
   script:
     - cd $GOPATH/src/$CI_PROJECT_NAME
     - go get ./...
-    - env GOOS=linux GOARCH=amd64 go build $CI_PROJECT_NAME -o goj
+    - env GOOS=linux GOARCH=amd64 go build -o goj
     - zip ./goj_$GOJ_VERSION_linux_amd64.zip goj
     - coscmd upload -s ./goj_$GOJ_VERSION_linux_amd64.zip /goj/$GOJ_VERSION/goj_$GOJ_VERSION_linux_amd64.zip
     - rm ./goj ./goj_$GOJ_VERSION_linux_amd64.zip
@@ -57,7 +57,7 @@ windows:
   script:
     - cd $GOPATH/src/$CI_PROJECT_NAME
     - go get ./...
-    - env GOOS=windows GOARCH=amd64 go build $CI_PROJECT_NAME -o goj.exe
+    - env GOOS=windows GOARCH=amd64 go build -o goj.exe
     - zip ./goj_$GOJ_VERSION_windows_amd64.zip goj.exe
     - coscmd upload -s ./goj_$GOJ_VERSION_windows_amd64.zip /goj/$GOJ_VERSION/goj_$GOJ_VERSION_windows_amd64.zip
     - rm ./goj.exe ./goj_$GOJ_VERSION_windows_amd64.zip
