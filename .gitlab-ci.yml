@@ -30,8 +30,8 @@ before_script:
 source:
   script:
     - cd $GOPATH/src
-    - tar czf goj-$GOJ_VERSION.orig.tar.gz -C $CI_PROJECT_NAME .
-    - coscmd upload -s ./goj-$GOJ_VERSION.orig.tar.gz /goj/source/goj-$GOJ_VERSION.orig.tar.gz
+    - tar --transform='flags=r;s|goj|goj_$GOJ_VERSION|' -czf goj-$GOJ_VERSION.orig.tar.gz goj
+    - coscmd upload -s ./goj_$GOJ_VERSION.orig.tar.gz /goj/$GOJ_VERSION/goj_$GOJ_VERSION.orig.tar.gz
     - rm ./goj*.*
 
 debian:
@@ -41,15 +41,23 @@ debian:
     - dpkg-source --before-build .
     - dpkg-buildpackage -us -uc -b
     - cd $GOPATH/src
-    - coscmd upload -s ./goj-$GOJ_VERSION-0_amd64.deb /goj/debian/goj-$GOJ_VERSION-0_amd64.deb
+    - coscmd upload -s ./goj_$GOJ_VERSION-0_amd64.deb /goj/$GOJ_VERSION/goj_$GOJ_VERSION-0_debian_amd64.deb
     - rm ./goj*.*
+
+linux:
+  script:
+    - cd $GOPATH/src/$CI_PROJECT_NAME
+    - go get ./...
+    - env GOOS=linux GOARCH=amd64 go build $CI_PROJECT_NAME -o goj
+    - zip ./goj_$GOJ_VERSION_linux_amd64.zip goj
+    - coscmd upload -s ./goj_$GOJ_VERSION_linux_amd64.zip /goj/$GOJ_VERSION/goj_$GOJ_VERSION_linux_amd64.zip
+    - rm ./goj ./goj_$GOJ_VERSION_linux_amd64.zip
 
 windows:
   script:
     - cd $GOPATH/src/$CI_PROJECT_NAME
     - go get ./...
-    - cd $GOPATH/src
-    - env GOOS=windows GOARCH=amd64 go build $CI_PROJECT_NAME
-    - zip goj-$GOJ_VERSION_amd64.zip
-    - coscmd upload -s ./goj-$GOJ_VERSION_amd64.zip /goj/windows/goj-$GOJ_VERSION_amd64.zip
-    - rm ./goj*.*
+    - env GOOS=windows GOARCH=amd64 go build $CI_PROJECT_NAME -o goj.exe
+    - zip ./goj_$GOJ_VERSION_windows_amd64.zip goj.exe
+    - coscmd upload -s ./goj_$GOJ_VERSION_windows_amd64.zip /goj/$GOJ_VERSION/goj_$GOJ_VERSION_windows_amd64.zip
+    - rm ./goj.exe ./goj_$GOJ_VERSION_windows_amd64.zip
