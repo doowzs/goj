@@ -1,2 +1,2 @@
-[debian/rules]
+[{Makefile, debian/rules}]
 indent_style = tab
