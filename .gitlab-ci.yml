@@ -30,8 +30,8 @@ before_script:
 source:
   script:
     - cd $GOPATH/src
-    - tar czf goj-$(GOJ_VERSION).orig.tar.gz -C $CI_PROJECT_NAME .
-    - coscmd -s ./goj-$(GOJ_VERSION).orig.tar.gz /goj/source/goj-$(GOJ_VERSION).orig.tar.gz
+    - tar czf goj-$GOJ_VERSION.orig.tar.gz -C $CI_PROJECT_NAME .
+    - coscmd upload -s ./goj-$GOJ_VERSION.orig.tar.gz /goj/source/goj-$GOJ_VERSION.orig.tar.gz
 
 debian:
   script:
@@ -40,11 +40,11 @@ debian:
     - dpkg-source --before-build .
     - dpkg-buildpackage -us -uc -b
     - cd $GOPATH/src
-    - coscmd -s ./goj-$(GOJ_VERSION)-0_amd64.deb /goj/debian/goj-$(GOJ_VERSION)-0_amd64.deb
+    - coscmd upload -s ./goj-$GOJ_VERSION-0_amd64.deb /goj/debian/goj-$GOJ_VERSION-0_amd64.deb
 
 windows:
   script:
     - cd $GOPATH/src
     - env GOOS=windows GOARCH=amd64 go build $CI_PROJECT_NAME
-    - zip goj-$(GOJ_VERSION)_amd64.zip
-    - coscmd -s ./goj-$(GOJ_VERSION)_amd64.zip /goj/windows/goj-$(GOJ_VERSION)_amd64.zip
+    - zip goj-$GOJ_VERSION_amd64.zip
+    - coscmd upload -s ./goj-$GOJ_VERSION_amd64.zip /goj/windows/goj-$GOJ_VERSION_amd64.zip
