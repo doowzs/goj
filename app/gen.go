@@ -7,7 +7,7 @@ import (
 )
 
 func runGen(path string) error {
-	f, err := file.OpenAndTruncate(path + "/dist.xml", os.O_WRONLY, 0644)
+	f, err := file.OpenAndTruncate(path + "/dist.xml", os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
 	}

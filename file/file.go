@@ -36,9 +36,6 @@ func OpenAndTruncate(name string, flags int, perm os.FileMode) (*os.File, error)
 	}
 
 	f, err := os.OpenFile(name, flags, perm)
-	if os.IsNotExist(err) {
-		f, err = os.Create(name)
-	}
 	if err != nil {
 		return nil, err
 	}

@@ -51,15 +51,24 @@ memory = 256      # measured in MiB
 [[testdata]]
 size      = 10     # excluding the sample case (e.g. 10 means [0-10] => 11 tests)
 overwrite = false  # set to true to force overwriting existing test data files
-language  = "cpp"  # same as the source file extension, i.e. "c", "cpp", "java", etc.`}
+language  = "cpp"  # same as the source file extension, i.e. "c", "cpp", "java", etc.
+`}
 	template["gen"] = File{path + "/", "gen", "testdata.language", `#include <bits/stdc++.h>
+using namespace std;
 int main() {
     /* please use stdin and stdout */
+    srand((unsigned)time(0));
+    cout << rand() % 100 << " " << rand() % 100 << endl;
     return 0;
-}`}
+}
+`}
 	template["std"] = File{path + "/", "std", "testdata.language", `#include <bits/stdc++.h>
+using namespace std;
 int main() {
     /* please use stdin and stdout */
+    int a = 0, b = 0;
+    cin >> a >> b;
+    cout << a + b << endl;
     return 0;
 }`}
 	template["_problem"]    = File{path + "/problem",  "",            "",     ``}

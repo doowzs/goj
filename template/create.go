@@ -2,6 +2,7 @@ package template
 
 import (
 	"fmt"
+	"goj/file"
 	"log"
 	"os"
 )
@@ -13,7 +14,7 @@ func Create(path string) error {
 		if index[0] == '_' {
 			/* create folder */
 			log.Println(" - folder:", template[index].Path)
-			err := os.Mkdir(template[index].Path, os.ModeDir)
+			err := os.Mkdir(template[index].Path, os.ModeDir|0644)
 			if err != nil {
 				return err
 			}
@@ -29,7 +30,7 @@ func Create(path string) error {
 			}
 			log.Println(" - file:  ", name)
 
-			f, err := os.Create(name)
+			f, err := file.OpenAndTruncate(name, os.O_CREATE|os.O_WRONLY, 0644)
 			if err != nil {
 				return err
 			}
