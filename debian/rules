@@ -7,16 +7,14 @@ TARBALL=goj-master.tar.gz
 URL=https://git.doowzs.com/doowzs/goj/-/archive/master/$(TARBALL)
 
 %:
-    dh $@
+	dh $@
 
 override_dh_auto_clean:
 override_dh_auto_test:
 override_dh_auto_build:
 override_dh_auto_install:
-    wget -N --progress=dot:mega $(URL)
-    tar --strip-components=1 -xf $(TARBALL)
-    go build
-    cp ./goj /usr/local/bin
+	go build
+	cp ./goj /usr/local/bin
 
 override_dh_gencontrol:
-    dh_gencontrol -- -v$(PACKAGEVERSION)
+	dh_gencontrol -- -v$(PACKAGEVERSION)
