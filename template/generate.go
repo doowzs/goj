@@ -58,7 +58,7 @@ func Generate(f *os.File, path string) error {
 		}
 	}
 
-	err = GenTests(t, ow, size, time, memory)
+	err = GenerateTests(t, ow, size, time, memory)
 	if err != nil {
 		return err
 	}
@@ -138,7 +138,7 @@ func ParseHint(f *os.File, t Template) error {
 	return ParseMarkdownFile(f, t, "hint")
 }
 
-func GenTests(t Template, ow bool, size, time, memory int) error {
+func GenerateTests(t Template, ow bool, size, time, memory int) error {
 	var gen, std string
 	log.Println("Compiling programs...")
 	gen, err := compile.Compile(t["gen"].Path, t["gen"].Name, t["gen"].Ext)
@@ -156,11 +156,7 @@ func GenTests(t Template, ow bool, size, time, memory int) error {
 	log.Println("Generating input files... overwrite", ow)
 	for i := 1; i <= size; i++ {
 		name := t["test-in"].Path + t["test-in"].Name + strconv.Itoa(i) + t["test-in"].Ext
-		notExist, err := file.NotExist(name)
-		if notExist && err != nil {
-			return err
-		}
-
+		notExist, _ := file.NotExist(name)
 		if ow || notExist {
 			time2.Sleep(time2.Second)
 			fo, err := file.OpenAndTruncate(name, os.O_CREATE|os.O_WRONLY, 0644)
@@ -244,7 +240,7 @@ func ParseTests(f *os.File, t Template, size int) error {
 		return err
 	}
 
-	for i := 1; i <= size; i++ {
+	for i := 0; i <= size; i++ {
 		_, err := fmt.Fprintf(f, `<!--TEST ` + strconv.Itoa(i) + `-->
 		<test_input><![CDATA[`)
 		if err != nil {

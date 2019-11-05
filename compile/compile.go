@@ -2,6 +2,7 @@ package compile
 
 import (
 	"errors"
+	"goj/file"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -16,10 +17,19 @@ func Compile(path, name, ext string) (string, error) {
 		err error
 	)
 
+	tmp := path + "tmp/"
+	notExist, _ := file.NotExist(tmp)
+	if notExist {
+		err = os.Mkdir(tmp, os.ModeDir|0644)
+		if err != nil {
+			return "", err
+		}
+	}
+
 	if runtime.GOOS == "windows" {
-		f, err = ioutil.TempFile(path, name + ".*.exe")
+		f, err = ioutil.TempFile(tmp, name + ".*.exe")
 	} else {
-		f, err = ioutil.TempFile(path, name + ".*.out")
+		f, err = ioutil.TempFile(tmp, name + ".*.out")
 	}
 	if err != nil {
 		return "", err

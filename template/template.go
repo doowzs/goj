@@ -39,16 +39,16 @@ var (
 func NewTemplate(path string) Template {
 	template := make(Template)
 	template["_root"]  = File{path, "", "", ``}
-	template["config"] = File{path + "/", "config", ".toml", `[[problem]]
+	template["config"] = File{path + "/", "config", ".toml", `[problem]
 title  = "` + path[strings.LastIndexByte(path, '/') + 1 : ] + `"
 hint   = false    # set to true to give hints defined in hint.md
 source = ""
 
-[[limits]]
+[limits]
 time   = 1        # measured in seconds
 memory = 256      # measured in MiB
 
-[[testdata]]
+[testdata]
 size      = 10     # excluding the sample case (e.g. 10 means [0-10] => 11 tests)
 overwrite = false  # set to true to force overwriting existing test data files
 language  = "cpp"  # same as the source file extension, i.e. "c", "cpp", "java", etc.
@@ -57,8 +57,9 @@ language  = "cpp"  # same as the source file extension, i.e. "c", "cpp", "java",
 using namespace std;
 int main() {
     /* please use stdin and stdout */
+	/* generator will sleep 1 second to keep good RNG */
     srand((unsigned)time(0));
-    cout << rand() % 100 << " " << rand() % 100 << endl;
+    cout << rand() %% 100 << " " << rand() %% 100 << endl;
     return 0;
 }
 `}
@@ -72,13 +73,13 @@ int main() {
     return 0;
 }`}
 	template["_problem"]    = File{path + "/problem",  "",            "",     ``}
-	template["description"] = File{path + "/problem/", "description", ".md",  ``}
-	template["input"]       = File{path + "/problem/", "input",       ".md",  ``}
-	template["output"]      = File{path + "/problem/", "output",      ".md",  ``}
+	template["description"] = File{path + "/problem/", "description", ".md",  `a+b`}
+	template["input"]       = File{path + "/problem/", "input",       ".md",  `a,b`}
+	template["output"]      = File{path + "/problem/", "output",      ".md",  `a+b`}
 	template["hint"]        = File{path + "/problem/", "hint",        ".md",  ``}
 	template["_data"]       = File{path + "/data",     "",            "",     ``}
-	template["sample-in"]   = File{path + "/data/",    "test0",       ".in",  ``}
-	template["sample-out"]  = File{path + "/data/",    "test0",       ".out", ``}
+	template["sample-in"]   = File{path + "/data/",    "test0",       ".in",  `1 1`}
+	template["sample-out"]  = File{path + "/data/",    "test0",       ".out", `2`}
 	template["test-in"]     = File{path + "/data/",    "test",        ".in",  ``}
 	template["test-out"]    = File{path + "/data/",    "test",        ".out", ``}
 	return template
