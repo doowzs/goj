@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+
+DISTRIBUTION = $(shell sed -n "s/^VERSION_CODENAME=//p" /etc/os-release)
+VERSION=$(GOJ_VERSION)
+PACKAGE=$(VERSION)-0~$(DISTRIBUTION)0
+TARBALL=goj-master.tar.gz
+URL=https://git.doowzs.com/doowzs/goj/-/archive/master/$(TARBALL)
+
+%:
+    dh $@
+
+override_dh_auto_clean:
+override_dh_auto_test:
+override_dh_auto_build:
+override_dh_auto_install:
+    wget -N --progress=dot:mega $(URL)
+    tar --strip-components=1 -xf $(TARBALL)
+    go build
+    cp ./goj /usr/local/bin
+
+override_dh_gencontrol:
+    dh_gencontrol -- -v$(PACKAGEVERSION)

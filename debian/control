@@ -1,0 +1,6 @@
+Source: goj
+Maintainer: Tianyun Zhang <doowzs@qq.com>
+
+Package: goj
+Architecture: amd64
+Description: generate oj problems with go
