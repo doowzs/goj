@@ -1,4 +1,4 @@
 #!/usr/bin/make -f
 
 %:
-	env exec_prefix=debian/usr/local dh $@
+	dh $@
