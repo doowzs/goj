@@ -13,8 +13,8 @@ before_script:
   - echo "Current server time is '$(date)'."
 
   - echo "Extracting version string..."
-  - export GOJ_VERSION=$(cat main.go | grep -Eo "Version string = \"([0-9.]+)\"" | cut -d'"' -f 2)
-  - echo "GOJ version is $GOJ_VERSION"
+  - export VERSION=$(cat main.go | grep -Eo "Version string = \"([0-9.]+)\"" | cut -d'"' -f 2)
+  - echo "GOJ version is $VERSION"
 
   - echo "Moving source code to GOROOT..."
   - rm -rf $GOPATH/src/$CI_PROJECT_NAME
@@ -30,9 +30,9 @@ before_script:
 source:
   script:
     - cd $GOPATH/src
-    - tar --transform='flags=r;s|goj|goj_$GOJ_VERSION|' -czf goj_$GOJ_VERSION.orig.tar.gz goj
-    - coscmd upload -s ./goj_$GOJ_VERSION.orig.tar.gz /goj/$GOJ_VERSION/goj_$GOJ_VERSION.orig.tar.gz
-    - rm ./goj*.*
+    - tar --transform='flags=r;s|goj|goj_$VERSION|' -czf goj_$VERSION.orig.tar.gz goj
+    - coscmd upload ./goj_$VERSION.orig.tar.gz /goj/$VERSION/goj_$VERSION.orig.tar.gz
+    - rm ./goj_$VERSION.orig.tar.gz
 
 debian:
   script:
@@ -41,23 +41,23 @@ debian:
     - dpkg-source --before-build .
     - dpkg-buildpackage -us -uc -b
     - cd $GOPATH/src
-    - coscmd upload -s ./goj_$GOJ_VERSION-0_amd64.deb /goj/$GOJ_VERSION/goj_$GOJ_VERSION-0_debian_amd64.deb
-    - rm ./goj*.*
+    - coscmd upload ./goj_$VERSION-0_amd64.deb /goj/$VERSION/goj_$VERSION-0_debian_amd64.deb
+    - rm ./goj_$VERSION-0_amd64.*
 
 linux:
   script:
     - cd $GOPATH/src/$CI_PROJECT_NAME
     - go get ./...
     - env GOOS=linux GOARCH=amd64 go build -o goj
-    - zip ./goj_$GOJ_VERSION_linux_amd64.zip goj
-    - coscmd upload -s ./goj_$GOJ_VERSION_linux_amd64.zip /goj/$GOJ_VERSION/goj_$GOJ_VERSION_linux_amd64.zip
-    - rm ./goj ./goj_$GOJ_VERSION_linux_amd64.zip
+    - zip ./goj_"$VERSION"_linux_amd64.zip goj
+    - coscmd upload ./goj_"$VERSION"_linux_amd64.zip /goj/$VERSION/goj_"$VERSION"_linux_amd64.zip
+    - rm ./goj ./goj_"$VERSION"_linux_amd64.zip
 
 windows:
   script:
     - cd $GOPATH/src/$CI_PROJECT_NAME
     - go get ./...
     - env GOOS=windows GOARCH=amd64 go build -o goj.exe
-    - zip ./goj_$GOJ_VERSION_windows_amd64.zip goj.exe
-    - coscmd upload -s ./goj_$GOJ_VERSION_windows_amd64.zip /goj/$GOJ_VERSION/goj_$GOJ_VERSION_windows_amd64.zip
-    - rm ./goj.exe ./goj_$GOJ_VERSION_windows_amd64.zip
+    - zip ./goj_"$VERSION"_windows_amd64.zip goj.exe
+    - coscmd upload ./goj_"$VERSION"_windows_amd64.zip /goj/$VERSION/goj_"$VERSION"_windows_amd64.zip
+    - rm ./goj.exe ./goj_"$VERSION"_windows_amd64.zip
