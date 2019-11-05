@@ -30,7 +30,7 @@ before_script:
 source:
   script:
     - cd $GOPATH/src
-    - tar --transform='flags=r;s|goj|goj_$GOJ_VERSION|' -czf goj-$GOJ_VERSION.orig.tar.gz goj
+    - tar --transform='flags=r;s|goj|goj_$GOJ_VERSION|' -czf goj_$GOJ_VERSION.orig.tar.gz goj
     - coscmd upload -s ./goj_$GOJ_VERSION.orig.tar.gz /goj/$GOJ_VERSION/goj_$GOJ_VERSION.orig.tar.gz
     - rm ./goj*.*
 
