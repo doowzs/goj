@@ -1,6 +1,11 @@
 package template
 
-import "strings"
+import (
+	"github.com/spf13/viper"
+	"os"
+	"strconv"
+	"strings"
+)
 
 type File struct {
 	Path    string
@@ -8,6 +13,8 @@ type File struct {
 	Ext     string
 	Content string
 }
+
+type Template map[string]File
 
 var (
 	Version string
@@ -22,13 +29,13 @@ var (
 		"output",
 		"hint",
 		"_data",
-		"test-in",
-		"test-out",
+		"sample-in",
+		"sample-out",
 	}
 )
 
-func NewTemplate(path string) map[string]File {
-	template := make(map[string]File)
+func NewTemplate(path string) Template {
+	template := make(Template)
 	template["_root"]  = File{path, "", "", ``}
 	template["config"] = File{path + "/", "config", ".toml", `[[problem]]
 title  = "` + path[strings.LastIndexByte(path, '/') + 1 : ] + `"
@@ -53,13 +60,39 @@ int main() {
     /* please use stdin and stdout */
     return 0;
 }`}
-	template["_problem"]    = File{path + "/problem",  "",            "",    ``}
-	template["description"] = File{path + "/problem/", "description", ".md", ``}
-	template["input"]       = File{path + "/problem/", "input",       ".md", ``}
-	template["output"]      = File{path + "/problem/", "output",      ".md", ``}
-	template["hint"]        = File{path + "/problem/", "hint",        ".md", ``}
-	template["_data"]       = File{path + "/data",     "",            "",    ``}
-	template["test-in"]     = File{path + "/data/",    "test",        ".in", ``}
+	template["_problem"]    = File{path + "/problem",  "",            "",     ``}
+	template["description"] = File{path + "/problem/", "description", ".md",  ``}
+	template["input"]       = File{path + "/problem/", "input",       ".md",  ``}
+	template["output"]      = File{path + "/problem/", "output",      ".md",  ``}
+	template["hint"]        = File{path + "/problem/", "hint",        ".md",  ``}
+	template["_data"]       = File{path + "/data",     "",            "",     ``}
+	template["sample-in"]   = File{path + "/data/",    "test0",       ".in",  ``}
+	template["sample-out"]  = File{path + "/data/",    "test0",       ".out", ``}
+	template["test-in"]     = File{path + "/data/",    "test",        ".in",  ``}
 	template["test-out"]    = File{path + "/data/",    "test",        ".out", ``}
 	return template
+}
+
+func NewTemplateWithViper(path string) (Template, *viper.Viper, error) {
+	t := NewTemplate(path)
+
+	c, err := os.Open(t["config"].Path + t["config"].Name + t["config"].Ext)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer c.Close()
+
+	v := viper.New()
+	v.SetConfigType("toml")
+	return t, v, v.ReadConfig(c)
+}
+
+func GetData(t Template, isInput bool, no int) string {
+	var direction string
+	if isInput {
+		direction = "in"
+	} else {
+		direction = "out"
+	}
+	return t["test-" + direction].Path + t["test-" + direction].Name + strconv.Itoa(no) + t["test-" + direction].Ext
 }
