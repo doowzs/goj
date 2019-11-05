@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GOJ Release Page</title>
+</head>
+<body>
+<h1>GOJ Release Page</h1>
+<hr />
+<h2>What is GOJ?</h2>
+<p>
+    GOJ is an online judge problem generator, written in Golang.
+    It helps to easily package problem into FPS (Free Problem Set) XML format.
+</p>
+<h2>What is GOJ designed for?</h2>
+<p>
+    GOJ is a reinvented wheel to ease the pain of creating problems on HUST OJ
+    (because the system really <s>sucks</s> is not great (both the UX and the backend)).
+</p>
+<h2>Do I have other choices?</h2>
+<p>
+    Of course! If you are a .NET or a C# lover, don't miss
+    <a href="https://github.com/StardustDL/generator-oj-problem" target="_blank">the generator made by StardustDL</a>.
+    However, for GNU/Linux users, using .NET is not an ideal choice.
+</p>
+<h2>How can someone install GOJ?</h2>
+<div>
+    <p>It's easy as long as you are using AMD64 (x86_64) architecture! There are 4 types of files:</p>
+    <ol>
+        <li>
+            Source: get dependencies with <code>go get ./...</code> and then run it with <code>go run main.go</code>
+            However, you need a stable network to download the Go dependencies.
+        </li>
+        <li>
+            Debian/Ubuntu package: install with <code>dpkg -i goj_x.y.z-0_amd64.deb</code> and then use with <code>goj</code>.
+        </li>
+        <li>
+            Linux universal pre-built executable: extract the files and then use it directly in shell (or add it to $PATH).
+        </li>
+        <li>
+            Windows pre-build executable: extract the files and then use it directly in CMD/PowerShell or something else (or add it to $PATH).
+        </li>
+    </ol>
+</div>
+<hr />
+<h2>Releases</h2>
+<h3>
+    v0.2.0 - 20191105
+    [<a href="/goj/0.2.0/goj_0.2.0.orig.tar.gz">Source</a>]
+    [<a href="/goj/0.2.0/goj_0.2.0-0_debian_amd64.deb ">Debian</a>]
+    [<a href="/goj/0.2.0/goj_0.2.0_linux_amd64.zip ">Linux</a>]
+    [<a href="/goj/0.2.0/goj_0.2.0_windows_amd64.zip ">Windows</a>]
+</h3>
+<ul>
+    <li>Adds debian package.</li>
+</ul>
+</body>
+</html>

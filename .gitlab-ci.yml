@@ -7,6 +7,10 @@ variables:
   # COS_BUCKET: defined in GitLab
   # COS_REGION: defined in GitLab
 
+stages:
+  - build
+  - index
+
 before_script:
   - echo "Configuring timezone..."
   - ln -fs /usr/share/zoneinfo/$TZ /etc/localtime
@@ -28,6 +32,7 @@ before_script:
     -r $COS_REGION
 
 source:
+  stage: build
   script:
     - cd $GOPATH/src
     - tar --transform='flags=r;s|goj|goj_$VERSION|' -czf goj_$VERSION.orig.tar.gz goj
@@ -35,6 +40,7 @@ source:
     - rm ./goj_$VERSION.orig.tar.gz
 
 debian:
+  stage: build
   script:
     - cd $GOPATH/src/$CI_PROJECT_NAME
     - go get ./...
@@ -45,19 +51,26 @@ debian:
     - rm ./goj_$VERSION-0_amd64.*
 
 linux:
+  stage: build
   script:
     - cd $GOPATH/src/$CI_PROJECT_NAME
     - go get ./...
     - env GOOS=linux GOARCH=amd64 go build -o goj
-    - zip ./goj_"$VERSION"_linux_amd64.zip goj
+    - zip ./goj_"$VERSION"_linux_amd64.zip goj README.md LICENSE
     - coscmd upload ./goj_"$VERSION"_linux_amd64.zip /goj/$VERSION/goj_"$VERSION"_linux_amd64.zip
     - rm ./goj ./goj_"$VERSION"_linux_amd64.zip
 
 windows:
+  stage: build
   script:
     - cd $GOPATH/src/$CI_PROJECT_NAME
     - go get ./...
     - env GOOS=windows GOARCH=amd64 go build -o goj.exe
-    - zip ./goj_"$VERSION"_windows_amd64.zip goj.exe
+    - zip ./goj_"$VERSION"_windows_amd64.zip goj.exe README.md LICENSE
     - coscmd upload ./goj_"$VERSION"_windows_amd64.zip /goj/$VERSION/goj_"$VERSION"_windows_amd64.zip
     - rm ./goj.exe ./goj_"$VERSION"_windows_amd64.zip
+
+index:
+  stage: index
+  script:
+    - coscmd upload ./index.html /goj/index.html
