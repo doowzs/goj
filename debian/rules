@@ -17,4 +17,4 @@ override_dh_auto_install:
 	cp ./goj /usr/local/bin
 
 override_dh_gencontrol:
-	dh_gencontrol -- -v$(PACKAGEVERSION)
+	dh_gencontrol -- -v$(PACKAGE)

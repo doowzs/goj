@@ -20,7 +20,7 @@ before_script:
   - export GOJ_VERSION=$(cat main.go | grep -Eo "Version string = \"([0-9.]+)\"" | cut -d'"' -f 2)
   - echo "GOJ version is $GOJ_VERSION"
 
-  - echo "Linking go library to GOROOT..."
+  - echo "Moving source code to GOROOT..."
   - rm -rf $GOPATH/src/$CI_PROJECT_NAME
   - mkdir -p $GOPATH/src/$CI_PROJECT_NAME
   - cp -r $CI_PROJECT_DIR $GOPATH/src/
