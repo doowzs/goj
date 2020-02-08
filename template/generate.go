@@ -12,7 +12,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
-	time2 "time"
+	"time"
 )
 
 func Generate(f *os.File, path string) error {
@@ -21,11 +21,11 @@ func Generate(f *os.File, path string) error {
 		return err
 	}
 
-	title  := v.GetString("problem.title")
-	time   := v.GetInt("limits.time")
-	memory := v.GetInt("limits.memory")
-	size   := v.GetInt("testdata.size")
-	ow     := v.GetBool("testdata.overwrite")
+	title       := v.GetString("problem.title")
+	timeLimit   := v.GetInt("limits.time")
+	memoryLimit := v.GetInt("limits.memory")
+	size        := v.GetInt("testdata.size")
+	overwrite   := v.GetBool("testdata.overwrite")
 
 	_, err = fmt.Fprintf(f, `<?xml version="1.0" encoding="UTF-8"?>
 <!--BEGIN FPS XML-->
@@ -34,8 +34,8 @@ func Generate(f *os.File, path string) error {
 	<item>
 <!--INFORMATION-->
 		<title><![CDATA[` + title + `]]></title>
-		<time_limit unit="s"><![CDATA[` + strconv.Itoa(time) + `]]></time_limit>
-		<memory_limit unit="mb"><![CDATA[` + strconv.Itoa(memory) + `]]></memory_limit>
+		<time_limit unit="s"><![CDATA[` + strconv.Itoa(timeLimit) + `]]></time_limit>
+		<memory_limit unit="mb"><![CDATA[` + strconv.Itoa(memoryLimit) + `]]></memory_limit>
 `)
 	if err != nil {
 		return err
@@ -58,7 +58,7 @@ func Generate(f *os.File, path string) error {
 		}
 	}
 
-	err = GenerateTests(t, ow, size, time, memory)
+	err = GenerateTests(t, overwrite, size, timeLimit, memoryLimit)
 	if err != nil {
 		return err
 	}
@@ -138,7 +138,7 @@ func ParseHint(f *os.File, t Template) error {
 	return ParseMarkdownFile(f, t, "hint")
 }
 
-func GenerateTests(t Template, ow bool, size, time, memory int) error {
+func GenerateTests(t Template, overwrite bool, size, timeLimit, memoryLimit int) error {
 	var gen, std string
 	log.Println("Compiling programs...")
 	gen, err := compile.Compile(t["gen"].Path, t["gen"].Name, t["gen"].Ext)
@@ -153,12 +153,12 @@ func GenerateTests(t Template, ow bool, size, time, memory int) error {
 	}
 	log.Println(" - std:", std)
 
-	log.Println("Generating input files... overwrite", ow)
+	log.Println("Generating input files... overwrite", overwrite)
 	for i := 1; i <= size; i++ {
 		name := t["test-in"].Path + t["test-in"].Name + strconv.Itoa(i) + t["test-in"].Ext
 		notExist, _ := file.NotExist(name)
-		if ow || notExist {
-			time2.Sleep(time2.Second)
+		if overwrite || notExist {
+			time.Sleep(time.Second)
 			fo, err := file.OpenAndTruncate(name, os.O_CREATE|os.O_WRONLY, 0644)
 			if err != nil {
 				return err
@@ -166,16 +166,19 @@ func GenerateTests(t Template, ow bool, size, time, memory int) error {
 
 			cmd := exec.Command(gen)
 			cmd.Stdout = fo
+
+			start := time.Now()
 			err = cmd.Run()
 			if err != nil {
 				return err
 			}
+			elapsed := time.Since(start)
 
 			err = fo.Close()
 			if err != nil {
 				return err
 			}
-			log.Println(" -", name, "OK")
+			log.Println(" -", name, "OK", elapsed)
 		} else {
 			log.Println(" -", name, "skipped")
 		}
@@ -197,10 +200,13 @@ func GenerateTests(t Template, ow bool, size, time, memory int) error {
 		cmd := exec.Command(std)
 		cmd.Stdin  = fi
 		cmd.Stdout = fo
+
+		start := time.Now()
 		err = cmd.Run()
 		if err != nil {
 			return err
 		}
+		elapsed := time.Since(start)
 
 		err = fi.Close()
 		if err != nil {
@@ -211,7 +217,7 @@ func GenerateTests(t Template, ow bool, size, time, memory int) error {
 		if err != nil {
 			return err
 		}
-		log.Println(" -", oname, "OK")
+		log.Println(" -", oname, "OK", elapsed)
 	}
 
 	err = os.Remove(gen)
