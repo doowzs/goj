@@ -56,21 +56,21 @@ language  = "cpp"  # same as the source file extension, i.e. "c", "cpp", "java",
 	template["gen"] = File{path + "/", "gen", "testdata.language", `#include <bits/stdc++.h>
 using namespace std;
 int main() {
-    /* please use stdin and stdout */
-	/* generator will sleep 1 second to keep good RNG */
-    srand((unsigned)time(0));
-    cout << rand() %% 100 << " " << rand() %% 100 << endl;
-    return 0;
+  /* please use stdin and stdout */
+  /* generator will sleep 1 second to keep good RNG */
+  srand((unsigned)time(0));
+  cout << rand() %% 100 << " " << rand() %% 100 << endl;
+  return 0;
 }
 `}
 	template["std"] = File{path + "/", "std", "testdata.language", `#include <bits/stdc++.h>
 using namespace std;
 int main() {
-    /* please use stdin and stdout */
-    int a = 0, b = 0;
-    cin >> a >> b;
-    cout << a + b << endl;
-    return 0;
+  /* please use stdin and stdout */
+  int a = 0, b = 0;
+  cin >> a >> b;
+  cout << a + b << endl;
+  return 0;
 }`}
 	template["_problem"]    = File{path + "/problem",  "",            "",     ``}
 	template["description"] = File{path + "/problem/", "description", ".md",  `a+b`}
