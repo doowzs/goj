@@ -68,3 +68,8 @@ windows:
     - zip ./goj_"$VERSION"_windows_amd64.zip goj.exe README.md LICENSE
     - coscmd upload ./goj_"$VERSION"_windows_amd64.zip /goj/$VERSION/goj_"$VERSION"_windows_amd64.zip
     - rm ./goj.exe ./goj_"$VERSION"_windows_amd64.zip
+
+index:
+  stage: index
+  script:
+    - coscmd upload ./index.html /goj/index.html
