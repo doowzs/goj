@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	Version string = "0.2.0"
+	Version string = "0.3.0"
 	job     string
 	path    string
 )
@@ -30,7 +30,7 @@ func parseArgs() {
 	args := os.Args[1:]
 	if len(args) != 2 {
 		if len(args) == 1 && args[0] == "version" {
-			fmt.Println(Version)
+			fmt.Println("GOJ", Version)
 			os.Exit(0)
 		} else {
 			printUsage()
@@ -46,11 +46,11 @@ func parseArgs() {
 }
 
 func printUsage() {
-	_, _ = fmt.Fprintln(os.Stderr, "GOJ", Version, ": Generate OJ problems with Go")
-	_, _ = fmt.Fprintln(os.Stderr, "Usage: goj job src [dst]")
-	_, _ = fmt.Fprintln(os.Stderr, "\nGOJ supports two types of jobs:")
-	_, _ = fmt.Fprintln(os.Stderr, "  - n, new: a new problem template")
-	_, _ = fmt.Fprintln(os.Stderr, "  - g, gen: generate hust-oj files")
+	_, _ = fmt.Fprintf(os.Stderr, "GOJ v%s: Generate OJ problems with Go\n", Version)
+	_, _ = fmt.Fprintln(os.Stderr, "Usage: goj job pathname")
+	_, _ = fmt.Fprintln(os.Stderr, "Supported jobs are:")
+	_, _ = fmt.Fprintln(os.Stderr, "  - n, new: create a new folder with problem files")
+	_, _ = fmt.Fprintln(os.Stderr, "  - g, gen: generate test data and FPS-format file")
 
 }
 
