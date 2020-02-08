@@ -1,3 +1,10 @@
+goj (0.3.0-0) unstable; urgency=low
+
+  * Fix copying test data.
+  * Measure execution time for gen and std.
+
+ -- Tianyun Zhang <doowzs@qq.com>  Sun, 9 Feb 2020 00:11:00 +0800
+
 goj (0.2.0-0) unstable; urgency=low
 
   * Initial release.
