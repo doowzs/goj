@@ -1,7 +1,6 @@
 package template
 
 import (
-	"bufio"
 	"fmt"
 	"goj/compile"
 	"goj/file"
@@ -232,8 +231,8 @@ func ParseData(f *os.File, t Template, isInput bool, no int) error {
 	if err != nil {
 		return err
 	}
-	_, err = io.CopyN(f, bufio.NewReader(fi), 1024)
-	if err != io.EOF {
+	_, err = io.Copy(f, fi)
+	if err != nil {
 		return err
 	}
 	return fi.Close()
