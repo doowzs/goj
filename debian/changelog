@@ -1,3 +1,11 @@
+goj (0.3.1-0) unstable; urgency=low
+
+  * Use <random> library for cpp.
+  * Default standard of cpp changed to C++14.
+  * Overwriting is set to true by default.
+
+ -- Tianyun Zhang <doowzs@qq.com>  Sun, 9 Feb 2020 13:36:00 +0800
+
 goj (0.3.0-0) unstable; urgency=low
 
   * Fix copying test data.

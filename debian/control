@@ -5,5 +5,5 @@ Maintainer: Tianyun Zhang <doowzs@qq.com>
 
 Package: goj
 Architecture: amd64
-Homepage: https://github.com/doowzs/goj
+Homepage: https://doowzs.com/goj/
 Description: Generate oj problems with Go
