@@ -49,7 +49,7 @@ func Compile(path, name, ext string) (string, error) {
 	case ".cc":
 	case ".cpp":
 		cmd = exec.Command("g++", "-fno-asm", "-Wall", "-lm", "--static",
-			"-std=c++11", "-DONLINE_JUDGE", "-o", exe, path + name + ext)
+			"-std=c++14", "-DONLINE_JUDGE", "-o", exe, path + name + ext)
 		break
 	default:
 		return "", errors.New("unspported source language")

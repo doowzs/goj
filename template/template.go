@@ -49,9 +49,9 @@ time   = 1        # measured in seconds
 memory = 256      # measured in MiB
 
 [testdata]
-size      = 10     # excluding the sample case (e.g. 10 means [0-10] => 11 tests)
-overwrite = false  # set to true to force overwriting existing test data files
-language  = "cpp"  # same as the source file extension, i.e. "c", "cpp", "java", etc.
+size      = 10    # excluding the sample case (e.g. 10 means [0-10] => 11 tests)
+overwrite = true  # set to false to avoid overwriting existing test data files
+language  = "cpp" # same as the source file extension, i.e. "c", "cpp", "java", etc.
 `}
 	template["gen"] = File{path + "/", "gen", "testdata.language", `#include <bits/stdc++.h>
 using namespace std;
