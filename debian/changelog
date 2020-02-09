@@ -1,3 +1,9 @@
+goj (0.3.2-0) unstable; urgency=low
+
+  * Fix Markdown rendering by replacing CRLF with LF.
+
+ -- Tianyun Zhang <doowzs@qq.com>  Mon, 10 Feb 2020 00:55:00 +0800
+
 goj (0.3.1-0) unstable; urgency=low
 
   * Use <random> library for cpp.

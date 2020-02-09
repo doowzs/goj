@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	Version string = "0.3.1"
+	Version string = "0.3.2"
 	job     string
 	path    string
 )
