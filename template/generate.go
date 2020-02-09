@@ -157,7 +157,6 @@ func GenerateTests(t Template, overwrite bool, size, timeLimit, memoryLimit int)
 		name := t["test-in"].Path + t["test-in"].Name + strconv.Itoa(i) + t["test-in"].Ext
 		notExist, _ := file.NotExist(name)
 		if overwrite || notExist {
-			time.Sleep(time.Second)
 			fo, err := file.OpenAndTruncate(name, os.O_CREATE|os.O_WRONLY, 0644)
 			if err != nil {
 				return err

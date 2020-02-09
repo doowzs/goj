@@ -56,17 +56,23 @@ language  = "cpp"  # same as the source file extension, i.e. "c", "cpp", "java",
 	template["gen"] = File{path + "/", "gen", "testdata.language", `#include <bits/stdc++.h>
 using namespace std;
 int main() {
-  /* please use stdin and stdout */
-  /* generator will sleep 1 second to keep good RNG */
-  srand((unsigned)time(0));
-  cout << rand() %% 100 << " " << rand() %% 100 << endl;
+  /****************** DO NOT MODIFY THIS PART **********************/
+  cin.sync_with_stdio(false);
+  cout.sync_with_stdio(false);
+  default_random_engine rng;
+  rng.seed(chrono::system_clock::now().time_since_epoch().count());
+  /********** Please use stdin/out and <random> library ************/
+  cout << rng() %% 100 << " " << uniform_int_distribution<int>(50, 100)(rng) << endl;
   return 0;
 }
 `}
 	template["std"] = File{path + "/", "std", "testdata.language", `#include <bits/stdc++.h>
 using namespace std;
 int main() {
-  /* please use stdin and stdout */
+  /****************** DO NOT MODIFY THIS PART **********************/
+  cin.sync_with_stdio(false);
+  cout.sync_with_stdio(false);
+  /**************** Please use stdin and stdout ********************/
   int a = 0, b = 0;
   cin >> a >> b;
   cout << a + b << endl;
