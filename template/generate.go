@@ -10,6 +10,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"regexp"
 	"strconv"
 	"time"
 )
@@ -79,7 +80,9 @@ func ParseMarkdownFile(f *os.File, t Template, i string) error {
 	if err != nil {
 		return err
 	}
-	html := string(blackfriday.Run([]byte(string(data))))
+	re := regexp.MustCompile("\r\n")
+	md := re.ReplaceAllString(string(data), "\n")
+	html := string(blackfriday.Run([]byte(md)))
 	_, err = fmt.Fprintf(f, `		<` + i + `><![CDATA[` + html + `]]></` + i + `>
 `)
 	return err
