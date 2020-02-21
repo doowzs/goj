@@ -18,7 +18,7 @@ type Template map[string]File
 
 var (
 	Version string
-	Order = []string{
+	Order   = []string{
 		"_root",
 		"config",
 		"gen",
@@ -38,9 +38,9 @@ var (
 
 func NewTemplate(path string) Template {
 	template := make(Template)
-	template["_root"]  = File{path, "", "", ``}
+	template["_root"] = File{path, "", "", ``}
 	template["config"] = File{path + "/", "config", ".toml", `[problem]
-title  = "` + path[strings.LastIndexByte(path, '/') + 1 : ] + `"
+title  = "` + path[strings.LastIndexByte(path, '/')+1:] + `"
 hint   = false    # set to true to give hints defined in hint.md
 source = ""
 
@@ -78,16 +78,16 @@ int main() {
   cout << a + b << endl;
   return 0;
 }`}
-	template["_problem"]    = File{path + "/problem",  "",            "",     ``}
-	template["description"] = File{path + "/problem/", "description", ".md",  `a+b`}
-	template["input"]       = File{path + "/problem/", "input",       ".md",  `a,b`}
-	template["output"]      = File{path + "/problem/", "output",      ".md",  `a+b`}
-	template["hint"]        = File{path + "/problem/", "hint",        ".md",  ``}
-	template["_data"]       = File{path + "/data",     "",            "",     ``}
-	template["sample-in"]   = File{path + "/data/",    "test0",       ".in",  `1 1`}
-	template["sample-out"]  = File{path + "/data/",    "test0",       ".out", `2`}
-	template["test-in"]     = File{path + "/data/",    "test",        ".in",  ``}
-	template["test-out"]    = File{path + "/data/",    "test",        ".out", ``}
+	template["_problem"] = File{path + "/problem", "", "", ``}
+	template["description"] = File{path + "/problem/", "description", ".md", `a+b`}
+	template["input"] = File{path + "/problem/", "input", ".md", `a,b`}
+	template["output"] = File{path + "/problem/", "output", ".md", `a+b`}
+	template["hint"] = File{path + "/problem/", "hint", ".md", ``}
+	template["_data"] = File{path + "/data", "", "", ``}
+	template["sample-in"] = File{path + "/data/", "sample", ".in", `1 1`}
+	template["sample-out"] = File{path + "/data/", "sample", ".out", `2`}
+	template["test-in"] = File{path + "/data/", "test", ".in", ``}
+	template["test-out"] = File{path + "/data/", "test", ".out", ``}
 	return template
 }
 
@@ -125,5 +125,9 @@ func GetData(t Template, isInput bool, no int) string {
 	} else {
 		direction = "out"
 	}
-	return t["test-" + direction].Path + t["test-" + direction].Name + strconv.Itoa(no) + t["test-" + direction].Ext
+	if no == 0 {
+		return t["sample-"+direction].Path + t["sample-"+direction].Name + t["test-"+direction].Ext
+	} else {
+		return t["test-"+direction].Path + t["test-"+direction].Name + strconv.Itoa(no) + t["test-"+direction].Ext
+	}
 }

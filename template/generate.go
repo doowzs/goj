@@ -21,21 +21,21 @@ func Generate(f *os.File, path string) error {
 		return err
 	}
 
-	title       := v.GetString("problem.title")
-	timeLimit   := v.GetInt("limits.time")
+	title := v.GetString("problem.title")
+	timeLimit := v.GetInt("limits.time")
 	memoryLimit := v.GetInt("limits.memory")
-	size        := v.GetInt("testdata.size")
-	overwrite   := v.GetBool("testdata.overwrite")
+	size := v.GetInt("testdata.size")
+	overwrite := v.GetBool("testdata.overwrite")
 
 	_, err = fmt.Fprintf(f, `<?xml version="1.0" encoding="UTF-8"?>
 <!--BEGIN FPS XML-->
 <fps version="1.2" url="https://github.com/zhblue/freeproblemset/">
-	<generator name="GOJ-` + Version + `" url="https://git.doowzs.com/doowzs/goj"/>
+	<generator name="GOJ-`+Version+`" url="https://git.doowzs.com/doowzs/goj"/>
 	<item>
 <!--INFORMATION-->
-		<title><![CDATA[` + title + `]]></title>
-		<time_limit unit="s"><![CDATA[` + strconv.Itoa(timeLimit) + `]]></time_limit>
-		<memory_limit unit="mb"><![CDATA[` + strconv.Itoa(memoryLimit) + `]]></memory_limit>
+		<title><![CDATA[`+title+`]]></title>
+		<time_limit unit="s"><![CDATA[`+strconv.Itoa(timeLimit)+`]]></time_limit>
+		<memory_limit unit="mb"><![CDATA[`+strconv.Itoa(memoryLimit)+`]]></memory_limit>
 `)
 	if err != nil {
 		return err
@@ -83,7 +83,7 @@ func ParseMarkdownFile(f *os.File, t Template, i string) error {
 	re := regexp.MustCompile("\r\n")
 	md := re.ReplaceAllString(string(data), "\n")
 	html := string(blackfriday.Run([]byte(md)))
-	_, err = fmt.Fprintf(f, `		<` + i + `><![CDATA[` + html + `]]></` + i + `>
+	_, err = fmt.Fprintf(f, `		<`+i+`><![CDATA[`+html+`]]></`+i+`>
 `)
 	return err
 }
@@ -157,7 +157,7 @@ func GenerateTests(t Template, overwrite bool, size, timeLimit, memoryLimit int)
 
 	log.Println("Generating input files... overwrite", overwrite)
 	for i := 1; i <= size; i++ {
-		name := t["test-in"].Path + t["test-in"].Name + strconv.Itoa(i) + t["test-in"].Ext
+		name := GetData(t, true, i)
 		notExist, _ := file.NotExist(name)
 		if overwrite || notExist {
 			fo, err := file.OpenAndTruncate(name, os.O_CREATE|os.O_WRONLY, 0644)
@@ -187,8 +187,8 @@ func GenerateTests(t Template, overwrite bool, size, timeLimit, memoryLimit int)
 
 	log.Println("Generating output files...")
 	for i := 0; i <= size; i++ {
-		iname := t["test-in"].Path  + t["test-in"].Name  + strconv.Itoa(i) + t["test-in"].Ext
-		oname := t["test-out"].Path + t["test-out"].Name + strconv.Itoa(i) + t["test-out"].Ext
+		iname := GetData(t, true, i)
+		oname := GetData(t, false, i)
 		fi, err := os.Open(iname)
 		if err != nil {
 			return err
@@ -199,7 +199,7 @@ func GenerateTests(t Template, overwrite bool, size, timeLimit, memoryLimit int)
 		}
 
 		cmd := exec.Command(std)
-		cmd.Stdin  = fi
+		cmd.Stdin = fi
 		cmd.Stdout = fo
 
 		start := time.Now()
@@ -247,8 +247,8 @@ func ParseTests(f *os.File, t Template, size int) error {
 		return err
 	}
 
-	for i := 0; i <= size; i++ {
-		_, err := fmt.Fprintf(f, `<!--TEST ` + strconv.Itoa(i) + `-->
+	for i := 1; i <= size; i++ {
+		_, err := fmt.Fprintf(f, `<!--TEST `+strconv.Itoa(i)+`-->
 		<test_input><![CDATA[`)
 		if err != nil {
 			return err
