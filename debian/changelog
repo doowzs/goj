@@ -1,3 +1,10 @@
+goj (0.4.0-0) unstable; urgency=low
+
+  * Rename the file test0 to sample.
+  * Remove sample from test cases part of FPS file.
+
+ -- Tianyun Zhang <doowzs@qq.com>  Fri, 21 Feb 2020 18:51:00 +0800
+
 goj (0.3.2-0) unstable; urgency=low
 
   * Fix Markdown rendering by replacing CRLF with LF.
