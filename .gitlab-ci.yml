@@ -35,7 +35,7 @@ source:
   stage: build
   script:
     - cd $GOPATH/src
-    - tar --transform='flags=r;s|goj|goj_$VERSION|' -czf goj_$VERSION.orig.tar.gz goj
+    - tar --transform="flags=r;s|goj|goj_$VERSION|" -czf goj_$VERSION.orig.tar.gz goj
     - coscmd upload ./goj_$VERSION.orig.tar.gz /goj/$VERSION/goj_$VERSION.orig.tar.gz
     - rm ./goj_$VERSION.orig.tar.gz
 
