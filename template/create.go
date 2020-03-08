@@ -14,7 +14,7 @@ func Create(path string) error {
 		if index[0] == '_' {
 			/* create folder */
 			log.Println(" - folder:", template[index].Path)
-			err := os.Mkdir(template[index].Path, os.ModeDir|0644)
+			err := os.Mkdir(template[index].Path, os.ModeDir|0755)
 			if err != nil {
 				return err
 			}
