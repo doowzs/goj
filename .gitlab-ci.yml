@@ -69,6 +69,16 @@ windows:
     - coscmd upload ./goj_"$VERSION"_windows_amd64.zip /goj/$VERSION/goj_"$VERSION"_windows_amd64.zip
     - rm ./goj.exe ./goj_"$VERSION"_windows_amd64.zip
 
+darwin:
+  stage: build
+  script:
+    - cd $GOPATH/src/$CI_PROJECT_NAME
+    - go get ./...
+    - env GOOS=darwin GOARCH=amd64 go build -o goj
+    - zip ./goj_"$VERSION"_darwin_amd64.zip goj README.md LICENSE
+    - coscmd upload ./goj_"$VERSION"_darwin_amd64.zip /goj/$VERSION/goj_"$VERSION"_darwin_amd64.zip
+    - rm ./goj ./goj_"$VERSION"_darwin_amd64.zip
+
 index:
   stage: index
   script:

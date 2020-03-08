@@ -1,3 +1,10 @@
+goj (0.4.1-0) unstable; urgency=low
+
+  * Fix permission of directories: 0644 -> 0755
+  * Add binary build for Darwin (macOS).
+
+ -- Tianyun Zhang <doowzs@qq.com>  Sun, 8 Mar 2020 16:47:00 +0800
+
 goj (0.4.0-0) unstable; urgency=low
 
   * Rename the file test0 to sample.
