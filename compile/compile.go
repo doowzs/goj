@@ -2,6 +2,7 @@ package compile
 
 import (
 	"errors"
+  "fmt"
 	"goj/file"
 	"io/ioutil"
 	"os"
@@ -20,7 +21,7 @@ func Compile(path, name, ext string) (string, error) {
 	tmp := path + "tmp/"
 	notExist, _ := file.NotExist(tmp)
 	if notExist {
-		err = os.Mkdir(tmp, os.ModeDir|0644)
+		err = os.Mkdir(tmp, os.ModeDir|0755)
 		if err != nil {
 			return "", err
 		}
@@ -43,17 +44,22 @@ func Compile(path, name, ext string) (string, error) {
 
 	switch ext {
 	case ".c":
-		cmd = exec.Command("gcc", "-fno-asm", "-Wall", "-lm", "--static",
-			"-std=c99", "-DONLINE_JUDGE", "-o", exe, path + name + ext)
+		cmd = exec.Command("gcc", "-fno-asm", "-Wall", "-lm", "-O2",
+      "-std=c99", "-DONLINE_JUDGE", "-o", exe, path + name + ext)
 		break
 	case ".cc":
 	case ".cpp":
-		cmd = exec.Command("g++", "-fno-asm", "-Wall", "-lm", "--static",
+		cmd = exec.Command("g++", "-fno-asm", "-Wall", "-lm", "-O2",
 			"-std=c++14", "-DONLINE_JUDGE", "-o", exe, path + name + ext)
 		break
 	default:
 		return "", errors.New("unspported source language")
 	}
 
-	return exe, cmd.Run()
+  output, err := cmd.CombinedOutput()
+  if err != nil {
+    fmt.Println(fmt.Sprint(err) + ": " + string(output))
+    return "", err
+  }
+  return exe, nil
 }
