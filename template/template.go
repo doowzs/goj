@@ -63,11 +63,11 @@ size      = 10    # excluding the sample case (e.g. 10 means [0-10] => 11 tests)
 overwrite = true  # set to false to avoid overwriting existing test data files
 language  = "cpp" # same as the source file extension, i.e. "c", "cpp", "java", etc.
 `}
-	template["gen"] = File{path + "/", "gen", "testdata.language", `#if defined(__GNUC__) || defined(__GNUG__)
-#include <bits/stdc++.h>
-#elif defined(__clang__)
+	template["gen"] = File{path + "/", "gen", "testdata.language", `#if defined(__clang__)
 #include <iostream>
 #include <random>
+#elif defined(__GNUC__) || defined(__GNUG__)
+#include <bits/stdc++.h>
 #endif
 using namespace std;
 int main() {
@@ -81,11 +81,11 @@ int main() {
   return 0;
 }
 `}
-	template["std"] = File{path + "/", "std", "testdata.language", `#if defined(__GNUC__) || defined(__GNUG__)
-#include <bits/stdc++.h>
-#elif defined(__clang__)
+	template["std"] = File{path + "/", "std", "testdata.language", `#if defined(__clang__)
 #include <iostream>
 #include <random>
+#elif defined(__GNUC__) || defined(__GNUG__)
+#include <bits/stdc++.h>
 #endif
 using namespace std;
 int main() {
