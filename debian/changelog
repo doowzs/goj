@@ -1,3 +1,11 @@
+goj (0.4.2-0) unstable; urgency=low
+
+  * Fix compilation folder permission and set -O2 flag for compilers.
+  * Show compilers' output in case that compilation process failed.
+  * Update template for C++ to detect compiler type (GNU or Clang).
+
+ -- Tianyun Zhang <doowzs@qq.com>  Tue, 10 Mar 2020 22:35:00 +0800
+
 goj (0.4.1-0) unstable; urgency=low
 
   * Fix permission of directories: 0644 -> 0755

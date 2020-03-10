@@ -58,7 +58,7 @@ func Compile(path, name, ext string) (string, error) {
 
   output, err := cmd.CombinedOutput()
   if err != nil {
-    fmt.Println(fmt.Sprint(err) + ": " + string(output))
+    fmt.Println(string(output))
     return "", err
   }
   return exe, nil
