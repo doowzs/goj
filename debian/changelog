@@ -1,3 +1,10 @@
+goj (0.4.3-0) unstable; urgency=low
+
+  * Update order of tags in FPS XML.
+  * Generate sample output before pasting it.
+
+ -- Tianyun Zhang <doowzs@qq.com>  Wed, 11 Mar 2020 01:33:00 +0800
+
 goj (0.4.2-0) unstable; urgency=low
 
   * Add Makefile for convenience and cleaning up.
