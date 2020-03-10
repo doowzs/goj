@@ -20,6 +20,7 @@ var (
 	Version string
 	Order   = []string{
 		"_root",
+    "Makefile",
 		"config",
 		"gen",
 		"std",
@@ -39,6 +40,15 @@ var (
 func NewTemplate(path string) Template {
 	template := make(Template)
 	template["_root"] = File{path, "", "", ``}
+  template["Makefile"] = File{path + "/", "Makefile", "", `generate:
+	goj gen .
+
+.PHONY: clean
+clean:
+	rm -f ./tmp/*.out
+	rm -f ./tmp/*.exe
+	rm -f ./dist.xml
+`}
 	template["config"] = File{path + "/", "config", ".toml", `[problem]
 title  = "` + path[strings.LastIndexByte(path, '/')+1:] + `"
 hint   = false    # set to true to give hints defined in hint.md

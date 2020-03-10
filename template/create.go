@@ -21,7 +21,7 @@ func Create(path string) error {
 		} else {
 			/* create file */
 			var name string
-			if template[index].Ext[0] != '.' {
+			if len(template[index].Ext) > 0 && template[index].Ext[0] != '.' {
 				/* gen and std can have different extension */
 				name = template[index].Path + template[index].Name + ".cpp"
 			} else {
