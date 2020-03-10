@@ -46,11 +46,6 @@ func Generate(f *os.File, path string) error {
 		return err
 	}
 
-	err = ParseSamples(f, t)
-	if err != nil {
-		return err
-	}
-
 	if v.GetBool("problem.hint") {
 		err = ParseHint(f, t)
 		if err != nil {
@@ -59,6 +54,11 @@ func Generate(f *os.File, path string) error {
 	}
 
 	err = GenerateTests(t, overwrite, size, timeLimit, memoryLimit)
+	if err != nil {
+		return err
+	}
+
+	err = ParseSamples(f, t)
 	if err != nil {
 		return err
 	}
