@@ -1,3 +1,10 @@
+goj (0.5.0-0) unstable; urgency=low
+
+  * Support Java as new source language.
+  * Auto guess extension name of source files.
+
+ -- Tianyun Zhang <doowzs@qq.com>  Sun, 15 Mar 2020 23:55:00 +0800
+
 goj (0.4.3-0) unstable; urgency=low
 
   * Update order of tags in FPS XML.
