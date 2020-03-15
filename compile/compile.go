@@ -14,7 +14,7 @@ func Compile(path, name, ext string) (string, string, []string, error) {
 	var (
 		f         *os.File
 		cmd       *exec.Cmd
-		tempfile  string
+		tempFile  string
 		runnable  string
 		arguments []string
 		err       error
@@ -30,7 +30,7 @@ func Compile(path, name, ext string) (string, string, []string, error) {
 	}
 
 	if ext == ".java" {
-		tempfile = tempFolder + name + ".class"
+		tempFile = tempFolder + name + ".class"
 		runnable = "java"
 		arguments = []string{"-classpath", tempFolder, name}
 	} else {
@@ -43,7 +43,7 @@ func Compile(path, name, ext string) (string, string, []string, error) {
 			return "", "", nil, err
 		}
 
-		tempfile = f.Name()
+		tempFile = f.Name()
 		runnable = f.Name()
 		arguments = []string{}
 		err = f.Close()
@@ -55,17 +55,17 @@ func Compile(path, name, ext string) (string, string, []string, error) {
 	switch ext {
 	case ".c":
 		cmd = exec.Command("gcc", "-fno-asm", "-Wall", "-lm", "-O2",
-			"-std=c99", "-DONLINE_JUDGE", "-o", tempfile, path+name+ext)
+			"-std=c99", "-DONLINE_JUDGE", "-o", tempFile, path+name+ext)
 		break
 	case ".cc":
 	case ".cpp":
 		cmd = exec.Command("g++", "-fno-asm", "-Wall", "-lm", "-O2",
-			"-std=c++14", "-DONLINE_JUDGE", "-o", tempfile, path+name+ext)
+			"-std=c++14", "-DONLINE_JUDGE", "-o", tempFile, path+name+ext)
 		break
 	case ".java":
 		cmd = exec.Command("javac", "-J-Xms32m", "-J-Xmx256m", "-d", tempFolder, path+name+ext)
 	default:
-		return "", "", nil, errors.New("unspported source language")
+		return "", "", nil, errors.New("unsupported source language")
 	}
 
 	output, err := cmd.CombinedOutput()
@@ -73,5 +73,5 @@ func Compile(path, name, ext string) (string, string, []string, error) {
 		fmt.Println(string(output))
 		return "", "", nil, err
 	}
-	return tempfile, runnable, arguments, nil
+	return tempFile, runnable, arguments, nil
 }

@@ -2,6 +2,7 @@ package template
 
 import (
 	"github.com/spf13/viper"
+	"goj/file"
 	"os"
 	"strconv"
 	"strings"
@@ -61,9 +62,8 @@ memory = 256      # measured in MiB
 [testdata]
 size      = 10    # excluding the sample case (e.g. 10 means [0-10] => 11 tests)
 overwrite = true  # set to false to avoid overwriting existing test data files
-language  = "cpp" # same as the source file extension, i.e. "c", "cpp", "java", etc.
 `}
-	template["gen"] = File{path + "/", "gen", "testdata.language", `#if defined(__clang__)
+	template["gen"] = File{path + "/", "gen", ".cpp", `#if defined(__clang__)
 #include <iostream>
 #include <random>
 #elif defined(__GNUC__) || defined(__GNUG__)
@@ -81,7 +81,7 @@ int main() {
   return 0;
 }
 `}
-	template["std"] = File{path + "/", "std", "testdata.language", `#if defined(__clang__)
+	template["std"] = File{path + "/", "std", ".cpp", `#if defined(__clang__)
 #include <iostream>
 #include <random>
 #elif defined(__GNUC__) || defined(__GNUG__)
@@ -128,10 +128,14 @@ func NewTemplateWithViper(path string) (Template, *viper.Viper, error) {
 	}
 
 	for _, index := range []string{"gen", "std"} {
+		ext, err := file.GuessExtension(t[index].Path + t[index].Name)
+		if err != nil {
+			return nil, nil, err
+		}
 		t[index] = File{
 			Path:    t[index].Path,
 			Name:    t[index].Name,
-			Ext:     "." + v.GetString(t[index].Ext),
+			Ext:     ext,
 			Content: ``,
 		}
 	}

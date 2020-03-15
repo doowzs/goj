@@ -20,14 +20,7 @@ func Create(path string) error {
 			}
 		} else {
 			/* create file */
-			var name string
-			if len(template[index].Ext) > 0 && template[index].Ext[0] != '.' {
-				/* gen and std can have different extension */
-				name = template[index].Path + template[index].Name + ".cpp"
-			} else {
-				/* others files have a defined extension */
-				name = template[index].Path + template[index].Name + template[index].Ext
-			}
+			name := template[index].Path + template[index].Name + template[index].Ext
 			log.Println(" - file:  ", name)
 
 			f, err := file.OpenAndTruncate(name, os.O_CREATE|os.O_WRONLY, 0644)

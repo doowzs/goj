@@ -153,13 +153,13 @@ func GenerateTests(t Template, overwrite bool, size, timeLimit, memoryLimit int)
 	if err != nil {
 		return err
 	}
-	log.Println(" - gen:", genFile)
+	log.Println(" - gen", t["gen"].Ext, "=>", genFile)
 
 	stdFile, stdExec, stdArgs, err = compile.Compile(t["std"].Path, t["std"].Name, t["std"].Ext)
 	if err != nil {
 		return err
 	}
-	log.Println(" - std:", stdFile)
+	log.Println(" - std", t["std"].Ext, "=>", stdFile)
 
 	log.Println("Generating input files... overwrite", overwrite)
 	for i := 1; i <= size; i++ {

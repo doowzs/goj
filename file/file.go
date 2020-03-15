@@ -5,7 +5,20 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 )
+
+func GuessExtension(name string) (string, error) {
+	list, err := filepath.Glob(name + ".*")
+	if err != nil {
+		return "", err
+	}
+	if len(list) != 1 {
+		return "", errors.New("none or multiple files with name " + name)
+	} else {
+		return filepath.Ext(list[0]), nil
+	}
+}
 
 func NotExist(name string) (bool, error) {
 	f, err := os.Open(name)
