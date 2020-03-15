@@ -141,19 +141,25 @@ func ParseHint(f *os.File, t Template) error {
 }
 
 func GenerateTests(t Template, overwrite bool, size, timeLimit, memoryLimit int) error {
-	var gen, std string
-	log.Println("Compiling programs...")
-	gen, err := compile.Compile(t["gen"].Path, t["gen"].Name, t["gen"].Ext)
-	if err != nil {
-		return err
-	}
-	log.Println(" - gen:", gen)
+	var (
+		genFile, stdFile string
+		genExec, stdExec string
+		genArgs, stdArgs []string
+		err              error
+	)
 
-	std, err = compile.Compile(t["std"].Path, t["std"].Name, t["std"].Ext)
+	log.Println("Compiling programs...")
+	genFile, genExec, genArgs, err = compile.Compile(t["gen"].Path, t["gen"].Name, t["gen"].Ext)
 	if err != nil {
 		return err
 	}
-	log.Println(" - std:", std)
+	log.Println(" - gen:", t["gen"].Ext)
+
+	stdFile, stdExec, stdArgs, err = compile.Compile(t["std"].Path, t["std"].Name, t["std"].Ext)
+	if err != nil {
+		return err
+	}
+	log.Println(" - std:", t["std"].Ext)
 
 	log.Println("Generating input files... overwrite", overwrite)
 	for i := 1; i <= size; i++ {
@@ -165,7 +171,7 @@ func GenerateTests(t Template, overwrite bool, size, timeLimit, memoryLimit int)
 				return err
 			}
 
-			cmd := exec.Command(gen)
+			cmd := exec.Command(genExec, genArgs...)
 			cmd.Stdout = fo
 
 			start := time.Now()
@@ -198,7 +204,7 @@ func GenerateTests(t Template, overwrite bool, size, timeLimit, memoryLimit int)
 			return err
 		}
 
-		cmd := exec.Command(std)
+		cmd := exec.Command(stdExec, stdArgs...)
 		cmd.Stdin = fi
 		cmd.Stdout = fo
 
@@ -221,11 +227,11 @@ func GenerateTests(t Template, overwrite bool, size, timeLimit, memoryLimit int)
 		log.Println(" -", oname, "OK", elapsed)
 	}
 
-	err = os.Remove(gen)
+	err = os.Remove(genFile)
 	if err != nil {
 		return err
 	}
-	return os.Remove(std)
+	return os.Remove(stdFile)
 }
 
 func ParseData(f *os.File, t Template, isInput bool, no int) error {
